@@ -1,0 +1,143 @@
+
+<html>
+  <head>
+      <title>Fiat CVP - Toro</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image.prod.js"></script>
+      <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image-aframe.prod.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    </head>
+<style>
+.divbutton{
+  position: absolute;
+    z-index: 3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  place-content: center;
+  place-items: center;
+  font-size: 5vw;
+
+}
+.redirect{
+  position: absolute;
+    z-index: 3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  place-content: center;
+  place-items: center;
+  font-size: 5vw;
+  visibility: hidden;
+}
+.btn{
+  width: 80%;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  place-items: center;
+  place-content: center;
+  gap:4%;
+  font-size: 100%;
+  padding: 0 5vw;
+  background: #1d77ff;
+  color: #ffff;
+  text-transform: uppercase;
+  border-radius:  128px;
+  border: none;
+  height: 11%;
+  visibility: hidden;
+}
+
+i, p{
+ margin:0;
+ padding: 0;
+}
+</style>
+<script>
+  function myFunction() {
+    const btn = document.getElementById("button");
+    document.getElementById("button").style.visibility = "hidden";
+    document.querySelector("#video").play();
+  }
+  </script>
+  <script>
+    function red() {
+      window.location.href='https://ofertas.cvpveiculos.com.br/toro/'
+      document.getElementById("redirect").style.visibility = "hidden"
+    }
+    </script>
+
+<script>
+   AFRAME.registerComponent('vidhandler', {
+    init: function () {
+      this.toggle = false;
+      document.querySelector("#video").pause(); //reference to the video
+    },
+    tick: function () {
+      if (document.querySelector("#targetx").object3D.visible == true) {
+        if (!this.toggle) {
+          this.toggle = true;
+          document.querySelector("#video").play();
+          console.log(document.querySelector("#video").currentTime)
+          var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+          if( userAgent.match( /iPad/i ) || userAgent.match( /iPhone/i ) || userAgent.match( /iPod/i ) )
+          {
+            if( document.getElementById("button") !== undefined && document.querySelector("#video").currentTime == 0){
+              document.getElementById("button").style.visibility = "visible";
+          }
+          if(document.querySelector("#video").currentTime = document.querySelector("#video").duration){
+            document.getElementById("redirect").style.visibility = "visible";
+          }
+          }
+          else if( userAgent.match( /Android/i ) )
+          {
+            if( document.getElementById("button") !== undefined && document.querySelector("#video").currentTime == 0){
+              document.getElementById("button").style.visibility = "hidden";
+          }
+          }
+
+         
+        }
+      } else {
+        this.toggle = false;
+        document.querySelector("#video").pause();
+        document.getElementById("button").style.visibility = "hidden";
+      }
+    }
+  });
+</script>
+
+  <body>
+<div class="divbutton">
+<button id="button" onclick="myFunction()" class="btn">
+  <i class="fa fa-play" style="color:white;"></i>
+  <p>Iniciar Experiência</p>
+</button>
+</div>
+
+<div class="redirect">
+  <button id="redirect" onclick="red()" class="btn">
+    <p>Saiba mais</p>
+  </button>
+</div>
+  <a-scene
+  mindar-image="imageTargetSrc: https://querocar.s3.sa-east-1.amazonaws.com/CVP/Toro.mind;"
+  color-space="sRGB"
+  renderer="colorManagement: true, physicallyCorrectLights"
+  vr-mode-ui="enabled: false"
+  device-orientation-permission-ui="enabled: true">
+  <a-assets>
+    <video onended="document.getElementById('redirect').style.visibility = 'visible'" id="video" src="https://querocar.s3.sa-east-1.amazonaws.com/CVP/Fiat+Toro.mp4"></video>
+  </a-assets>
+
+  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+  <a-entity id="targetx" mindar-image-target="targetIndex: 0">
+    <a-video vidhandler src="#video" width="1" height="2" position="0 0 0"></a-video>
+</a-scene>
+
+  </body>
+  </html>
